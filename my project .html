@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="JobPortal - Find your dream job or top talent with our comprehensive job search platform">
+  <meta name="keywords" content="jobs, employment, career, hiring, recruitment">
+  <title>JobPortal - Find Your Dream Job</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script>
+  
+<style>
+    /* Skip to content link for accessibility */
+    .skip-to-content {
+      position: absolute;
+      left: -9999px;
+      z-index: 999;
+      padding: 1em;
+      background-color: #212223;
+      color: white;
+      opacity: 0;
+    }
+    .skip-to-content:focus {
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 1;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f9;
+      position: relative;
+      padding-bottom: 100px;
+    }
+
+    .navbar {
+      background-color: #212223;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand img {
+      height: 40px;
+    }
+
+    .hero {
+      background: linear-gradient(rgba(24, 23, 22, 0.8), rgba(136, 169, 197, 0.8)), url('https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80') no-repeat center center/cover;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+    }
+
+    .search-box {
+      position: relative;
+      margin-bottom: 15px;
+    }
+
+    .search-box .form-control {
+      padding-right: 40px;
+      height: 50px;
+    }
+
+    .search-box .search-icon {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6c757d;
+      font-size: 1.2rem;
+    }
+
+    .section-title {
+      color: #007BFF;
+      margin-bottom: 30px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 60px;
+      height: 3px;
+      background-color: #007BFF;
+    }
+
+    .feature-card {
+      border: none;
+      border-radius: 10px;
+      padding: 30px 20px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background-color: #fff;
+      height: 100%;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-card i {
+      font-size: 2.5rem;
+      color: #007BFF;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+    }
+
+    .job-card {
+      border: 1px solid #e9ecef;
+      border-radius: 10px;
+      padding: 25px;
+      margin-bottom: 25px;
+      background-color: #fff;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .job-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .job-card h3 {
+      color: #007BFF;
+      margin-bottom: 10px;
+    }
+
+    .job-card .company {
+      color: #6c757d;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+
+    .job-card .job-type {
+      display: inline-block;
+      padding: 5px 15px;
+      background-color: #28a745;
+      color: #fff;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      margin-right: 10px;
+    }
+
+    .job-card .job-type.remote {
+      background-color: #17a2b8;
+    }
+
+    .job-card .job-type.part-time {
+      background-color: #ffc107;
+      color: #212529;
+    }
+
+    .job-card .salary {
+      font-weight: bold;
+      color: #333;
+      margin: 15px 0;
+    }
+
+    .job-card .badge-new {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #dc3545;
+      color: white;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+
+    .job-card .btn-apply {
+      background-color: #007BFF;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .job-card .btn-apply:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    .job-card .btn-save {
+      background-color: transparent;
+      border: 1px solid #007BFF;
+      color: #007BFF;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      margin-right: 10px;
+    }
+
+    .job-card .btn-save:hover {
+      background-color: #007BFF;
+      color: white;
+    }
+
+    .job-card .posted-date {
+      color: #6c757d;
+      font-size: 0.9rem;
+      margin-top: 15px;
+    }
+
+    .testimonial-carousel {
+      background-color: #007BFF;
+      padding: 60px 30px;
+      border-radius: 10px;
+      margin: 50px 0;
+      color: white;
+    }
+
+    .testimonial-item {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .testimonial-item img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 15px;
+      border: 3px solid white;
+    }
+
+    .testimonial-item p {
+      font-style: italic;
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+
+    .testimonial-item h5 {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .carousel-indicators button {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin: 0 5px;
+      background-color: rgba(255, 255, 255, 0.5);
+      border: none;
+    }
+
+    .carousel-indicators button.active {
+      background-color: white;
+    }
+
+    .carousel-control-prev, .carousel-control-next {
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .carousel-control-prev {
+      left: 20px;
+    }
+
+    .carousel-control-next {
+      right: 20px;
+    }
+
+    .profile-section {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      margin-bottom: 40px;
+    }
+
+    .profile-section label {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #495057;
+    }
+
+    .profile-section .form-control, .profile-section .form-select {
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid #ced4da;
+      margin-bottom: 20px;
+    }
+
+    .profile-section .form-control:focus, .profile-section .form-select:focus {
+      border-color: #007BFF;
+      box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+    }
+
+    .skill-tag {
+      display: inline-flex;
+      align-items: center;
+      background-color: #e9f5ff;
+      color: #007BFF;
+      padding: 5px 15px;
+      border-radius: 20px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+    }
+
+    .skill-tag .remove-skill {
+      margin-left: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+
+    .skill-tag .remove-skill:hover {
+      color: #dc3545;
+    }
+
+    .btn-save-profile {
+      background-color: #007BFF;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-weight: 600;
+      border: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-save-profile:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    .employers-section {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      margin-bottom: 40px;
+    }
+
+    .employers-section img {
+      border-radius: 10px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .employers-section ul {
+      padding-left: 20px;
+      margin-bottom: 30px;
+    }
+
+    .employers-section ul li {
+      margin-bottom: 10px;
+    }
+
+    .btn-post-job {
+      background-color: #007BFF;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-weight: 600;
+      border: none;
+      transition: all 0.3s ease;
+      margin-right: 15px;
+    }
+
+    .btn-post-job:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    .btn-contact-sales {
+      background-color: white;
+      color: #007BFF;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-weight: 600;
+      border: 1px solid #007BFF;
+      transition: all 0.3s ease;
+    }
+
+    .btn-contact-sales:hover {
+      background-color: #f8f9fa;
+      color: #0056b3;
+    }
+
+    .footer {
+      background-color: #212223;
+      color: #fff;
+      padding: 60px 0 30px;
+    }
+
+    .footer h5 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .footer h5::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 40px;
+      height: 2px;
+      background-color: #007BFF;
+    }
+
+    .footer ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer ul li a {
+      color: #adb5bd;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer ul li a:hover {
+      color: #007BFF;
+    }
+
+    .social-icons a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: white;
+      margin-right: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      background-color: #007BFF;
+      transform: translateY(-3px);
+    }
+
+    .subscribe-form .form-control {
+      height: 45px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .btn-subscribe {
+      background-color: #007BFF;
+      color: white;
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 600;
+      border: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-subscribe:hover {
+      background-color: #0056b3;
+    }
+
+    .copyright {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
+      margin-top: 40px;
+      text-align: center;
+      color: #adb5bd;
+    }
+
+    .modal-content {
+      border-radius: 10px;
+      border: none;
+    }
+
+    .modal-header {
+      border-bottom: none;
+      padding: 25px 25px 0;
+    }
+
+    .modal-body {
+      padding: 25px;
+    }
+
+    .modal-footer {
+      border-top: none;
+      padding: 0 25px 25px;
+    }
+
+    .form-floating label {
+      color: #6c757d;
+    }
+
+    .form-floating .form-control {
+      height: calc(3.5rem + 2px);
+      padding: 1rem 0.75rem;
+    }
+
+    .form-floating .form-control:focus ~ label {
+      color: #007BFF;
+    }
+
+    .btn-modal {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-modal-primary {
+      background-color: #007BFF;
+      border: none;
+      color: white;
+    }
+
+    .btn-modal-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-modal-secondary {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      color: #495057;
+    }
+
+    .btn-modal-secondary:hover {
+      background-color: #e9ecef;
+    }
+
+    .alert-fixed {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1100;
+      width: 350px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .alert-fixed.show {
+      opacity: 1;
+    }
+
+    .scrollspy-nav {
+      position: fixed;
+      top: 120px;
+      right: 20px;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: none;
+    }
+
+    .scrollspy-nav .nav-link {
+      color: #495057;
+      padding: 5px 0;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+    }
+
+    .scrollspy-nav .nav-link:hover, .scrollspy-nav .nav-link.active {
+      color: #007BFF;
+      font-weight: 600;
+    }
+
+    .spinner-container {
+      display: inline-block;
+      margin-left: 10px;
+    }
+
+    .job-details {
+      margin-top: 30px;
+    }
+
+    .job-details h4 {
+      color: #007BFF;
+      margin-bottom: 15px;
+    }
+
+    .job-details ul {
+      padding-left: 20px;
+    }
+
+    .job-details ul li {
+      margin-bottom: 8px;
+    }
+
+    .job-actions {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e9ecef;
+    }
+
+    /* Focus styles for accessibility */
+    a:focus, button:focus, input:focus, select:focus, textarea:focus {
+      outline: 2px solid #007BFF;
+      outline-offset: 2px;
+    }
+
+    /* Error states for forms */
+    .is-invalid {
+      border-color: #dc3545 !important;
+    }
+    .invalid-feedback {
+      color: #dc3545;
+      font-size: 0.875em;
+      margin-top: -15px;
+      margin-bottom: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        height: auto;
+        padding: 80px 0;
+      }
+      
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero p {
+        font-size: 1.1rem;
+      }
+      
+      .search-box {
+        margin-bottom: 10px;
+      }
+      
+      .scrollspy-nav {
+        display: none !important;
+      }
+      
+      .footer .col-md-4, .footer .col-md-3 {
+        margin-bottom: 30px;
+      }
+    }
+  </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#scrollspy-nav" data-bs-offset="100">
+  <!-- Skip to content link for keyboard users -->
+  <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+  <!-- Fixed Alert -->
+  <div class="alert alert-success alert-dismissible fade show alert-fixed" role="alert" id="global-alert" style="display: none;">
+    <span id="alert-message">Operation successful!</span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="#home">
+        <img src="https://www.aalpha.net/wp-content/uploads/2021/05/job_search_portals.png" alt="JobPortal Logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="employersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Employers
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="employersDropdown">
+              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#post-job-modal">Post Job</a></li>
+              <li><a class="dropdown-item" href="#">Manage Jobs</a></li>
+              <li><a class="dropdown-item" href="#">View Applicants</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#jobs">Jobs</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link" href="profile.html">Profile</a>
+            </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#employers">For Employers</a>
+          </li>
+          <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+            <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#login-modal" aria-label="Login to your account">Login</button>
+          </li>
+          <li class="nav-item mt-2 mt-lg-0">
+            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#register-modal" aria-label="Create a new account">Register</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+   <!-- Breadcrumbs -->
+   <nav aria-label="breadcrumb" class="container mt-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#home">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Jobs</li>
+    </ol>
+  </nav>
+
+  <!-- Scrollspy Navigation -->
+  <div id="scrollspy-nav" class="scrollspy-nav">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link" href="#home">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#about">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#jobs">Jobs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#profile">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#employers">Employers</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#testimonials">Testimonials</a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6">
+            <h1>Find Your Job Easily</h1>
+            <p>Join thousands of professionals who found their perfect career match with JobPortal</p>
+            <form class="row g-2">
+              <div class="col-md-5 search-box">
+                <label for="job-search" class="visually-hidden">Job title or keyword</label>
+                <input type="text" class="form-control typeahead" placeholder="Job title or keyword" id="job-search" aria-label="Search by job title or keyword">
+                <i class="fas fa-search search-icon" aria-hidden="true"></i>
+              </div>
+              <div class="col-md-5 search-box">
+                <label for="location-search" class="visually-hidden">Location</label>
+                <input type="text" class="form-control typeahead" placeholder="Location" id="location-search" aria-label="Search by location">
+                <i class="fas fa-map-marker-alt search-icon" aria-hidden="true"></i>
+              </div>
+              <div class="col-md-2">
+                <button type="submit" class="btn btn-warning w-100 h-100" aria-label="Search jobs">Search</button>
+              </div>
+            </form>
+            <div class="mt-3">
+              <span class="text-white">Popular searches: </span>
+              <a href="#" class="text-white me-2">Developer</a>
+              <a href="#" class="text-white me-2">Designer</a>
+              <a href="#" class="text-white me-2">Marketing</a>
+              <a href="#" class="text-white">Remote</a>
+            </div>
+          </div>
+          <div class="col-lg-6 d-none d-lg-block">
+            <img src="https://5.imimg.com/data5/TQ/QA/ZE/SELLER-41376584/job-portal-software-500x500.png" alt="Job Search Illustration" class="img-fluid" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="container mb-5">
+      <div class="row text-center mb-4">
+        <div class="col">
+          <h2 class="section-title">Why Choose JobPortal?</h2>
+          <p class="text-muted">We provide the best platform to connect job seekers with employers</p>
+        </div>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="feature-card">
+            <i class="fas fa-briefcase" aria-hidden="true"></i>
+            <h3>Thousands of Jobs</h3>
+            <p>Access to the latest job openings from top companies across various industries.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <i class="fas fa-user-tie" aria-hidden="true"></i>
+            <h3>Top Employers</h3>
+            <p>Connect with leading companies looking for talented professionals like you.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <i class="fas fa-rocket" aria-hidden="true"></i>
+            <h3>Fast Hiring</h3>
+            <p>Our streamlined process helps you get hired faster than traditional methods.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="bg-light py-5">
+      <div class="container text-center">
+        <h2 class="section-title mb-4">How It Works</h2>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <i class="fas fa-user-plus fa-2x text-primary mb-2" aria-hidden="true"></i>
+            <h5>Create Account</h5>
+            <p>Sign up with your email and set up your profile.</p>
+          </div>
+          <div class="col-md-4">
+            <i class="fas fa-search fa-2x text-primary mb-2" aria-hidden="true"></i>
+            <h5>Search Jobs</h5>
+            <p>Use filters to find jobs that match your skills.</p>
+          </div>
+          <div class="col-md-4">
+            <i class="fas fa-paper-plane fa-2x text-primary mb-2" aria-hidden="true"></i>
+            <h5>Apply & Get Hired</h5>
+            <p>Send applications and get hired quickly!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+    <!-- About Section -->
+    <section id="about" class="container mb-5">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <img src="https://smartblogger.com/wp-content/uploads/2020/09/online-jobs.jpg" alt="About JobPortal" class="img-fluid rounded" loading="lazy">
+        </div>
+        <div class="col-lg-6">
+          <h2 class="section-title">About JobPortal</h2>
+          <p>JobPortal is a leading online employment solution for job seekers and employers. Since 2023, we've been dedicated to connecting talented professionals with great companies.</p>
+          <p>Our mission is to make the job search process simple, efficient, and effective for everyone. We provide tools and resources to help you create a standout profile, apply to jobs, and prepare for interviews.</p>
+          <p>With thousands of job listings across various industries and locations, JobPortal is your one-stop destination for career advancement.</p>
+          <button type="button" class="btn btn-primary" data-bs-toggle="popover" data-bs-placement="bottom" 
+                  data-bs-content="Join our community of over 100,000 professionals and 5,000 companies">
+            Why Choose Us?
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Jobs Section -->
+    <section id="jobs" class="container mb-5">
+      <div class="row mb-4">
+        <div class="col">
+          <h2 class="section-title">Latest Job Openings</h2>
+          <p class="text-muted">Browse through our most recent job listings</p>
+        </div>
+      </div>
+      
+      <div class="row mb-4">
+        <div class="col-md-6 mb-3 mb-md-0">
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-filter" aria-hidden="true"></i></span>
+            <label for="job-filter" class="visually-hidden">Filter by Job Type</label>
+            <select class="form-select" id="job-filter" aria-label="Filter jobs by type">
+              <option selected>Filter by Job Type</option>
+              <option value="all">All Jobs</option>
+              <option value="full-time">Full-time</option>
+              <option value="part-time">Part-time</option>
+              <option value="remote">Remote</option>
+              <option value="contract">Contract</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-sort" aria-hidden="true"></i></span>
+            <label for="job-sort" class="visually-hidden">Sort by</label>
+            <select class="form-select" id="job-sort" aria-label="Sort job listings">
+              <option selected>Sort by</option>
+              <option value="newest">Newest First</option>
+              <option value="salary-high">Salary (High to Low)</option>
+              <option value="salary-low">Salary (Low to High)</option>
+              <option value="relevance">Relevance</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row" id="job-listings">
+        <!-- Job cards will be dynamically loaded here -->
+        <div class="col-lg-6">
+          <div class="job-card">
+            <span class="badge-new">New</span>
+            <h3>Senior Software Engineer</h3>
+            <p class="company">Tech Solutions Inc.</p>
+            <span class="job-type">Full-time</span>
+            <span class="job-type remote">Remote</span>
+            <p class="salary">₹120,000 - ₹150,000 per month</p>
+            <p>We're looking for an experienced software engineer to join our team and help build innovative solutions...</p>
+            <div class="posted-date">Posted 2 days ago</div>
+            <div class="job-actions">
+              <button class="btn btn-save" aria-label="Save this job">Save Job</button>
+              <button class="btn btn-apply" aria-label="Apply for this job">Apply Now</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-6">
+          <div class="job-card">
+            <h3>UX/UI Designer</h3>
+            <p class="company">Creative Minds Agency</p>
+            <span class="job-type">Full-time</span>
+            <p class="salary">₹90,000 - ₹110,000 per month</p>
+            <p>Join our design team to create beautiful and intuitive user experiences for our clients...</p>
+            <div class="posted-date">Posted 1 week ago</div>
+            <div class="job-actions">
+              <button class="btn btn-save" aria-label="Save this job">Save Job</button>
+              <button class="btn btn-apply" aria-label="Apply for this job">Apply Now</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-6">
+          <div class="job-card">
+            <span class="badge-new">New</span>
+            <h3>Marketing Manager</h3>
+            <p class="company">Growth Marketing Co.</p>
+            <span class="job-type">Full-time</span>
+            <p class="salary">₹80,000 - ₹100,000 per month</p>
+            <p>Lead our marketing team and develop strategies to drive customer acquisition and brand awareness...</p>
+            <div class="posted-date">Posted 3 days ago</div>
+            <div class="job-actions">
+              <button class="btn btn-save" aria-label="Save this job">Save Job</button>
+              <button class="btn btn-apply" aria-label="Apply for this job">Apply Now</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-6">
+          <div class="job-card">
+            <h3>Data Scientist</h3>
+            <p class="company">Analytics Pro</p>
+            <span class="job-type">Full-time</span>
+            <span class="job-type remote">Remote</span>
+            <p class="salary">₹140,000 - ₹180,000 per month</p>
+            <p>Use your data expertise to extract insights and build predictive models for our clients...</p>
+            <div class="posted-date">Posted 2 weeks ago</div>
+            <div class="job-actions">
+              <button class="btn btn-save" aria-label="Save this job">Save Job</button>
+              <button class="btn btn-apply" aria-label="Apply for this job">Apply Now</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-6">
+          <div class="job-card">
+            <h3>Customer Support Specialist</h3>
+            <p class="company">Service First</p>
+            <span class="job-type part-time">Part-time</span>
+            <p class="salary">₹40,000 - ₹50,000 per month</p>
+            <p>Provide exceptional customer service and support to our clients through various channels...</p>
+            <div class="posted-date">Posted 5 days ago</div>
+            <div class="job-actions">
+              <button class="btn btn-save" aria-label="Save this job">Save Job</button>
+              <button class="btn btn-apply" aria-label="Apply for this job">Apply Now</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-6">
+          <div class="job-card">
+            <span class="badge-new">New</span>
+            <h3>DevOps Engineer</h3>
+            <p class="company">Cloud Systems</p>
+            <span class="job-type">Full-time</span>
+            <span class="job-type remote">Remote</span>
+            <p class="salary">₹130,000 - ₹160,000 per month</p>
+            <p>Implement and maintain our cloud infrastructure and CI/CD pipelines for optimal performance...</p>
+            <div class="posted-date">Posted 1 day ago</div>
+            <div class="job-actions">
+              <button class="btn btn-save" aria-label="Save this job">Save Job</button>
+              <button class="btn btn-apply" aria-label="Apply for this job">Apply Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mt-4">
+        <div class="col text-center">
+          <button class="btn btn-outline-primary" id="load-more-jobs" aria-label="Load more job listings">
+            Load More Jobs
+            <div class="spinner-border spinner-border-sm text-primary spinner-container d-none" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonial-carousel">
+      <div class="container">
+        <h2 class="text-center mb-5">Success Stories</h2>
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <div class="testimonial-item">
+                <img src="https://freelancemaster.ng/wp-content/uploads/2023/11/Success-Stories-Nigerians-Flourishing-in-Online-Freelance-Jobs-2.jpeg" alt="Ahmed Ali" loading="lazy">
+                <p>"I found my dream job through JobPortal within two weeks of searching. The process was so easy and the job matching was spot on!"</p>
+                <h5>Ahmed Ali</h5>
+                <p>Senior Developer at TechCorp</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="testimonial-item">
+                <img src="https://tse2.mm.bing.net/th?id=OIP.NxHSpK_21-tdGbEM3JTZKgHaEZ&pid=Api&P=0&h=180" alt="Mugahid Salih" loading="lazy">
+                <p>"As an employer, we've hired 5 excellent candidates through JobPortal. The quality of applicants is outstanding and the platform is easy to use."</p>
+                <h5>Mugahid Salih</h5>
+                <p>HR Director at Innovate Inc.</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="testimonial-item">
+                <img src="https://i.pinimg.com/280x280_RS/3f/be/7e/3fbe7e7e413b86775ae5ba47d904a9e3.jpg" alt="Russel" loading="lazy">
+                <p>"The job matching algorithm is fantastic. It connected me with opportunities I wouldn't have found otherwise. I got 3 interview offers in my first week!"</p>
+                <h5>Russel</h5>
+                <p>Marketing Manager at BrandWorks</p>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev" aria-label="Previous testimonial">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next" aria-label="Next testimonial">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="profile" class="container mb-5">
+      <div class="profile-section">
+        <h2 class="section-title">My Profile</h2>
+        <p class="text-muted mb-4">Complete your profile to increase your visibility to employers</p>
+        
+        <form id="profile-form">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="full-name" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="full-name" placeholder="Enter your full name" required>
+                <div class="invalid-feedback">Please provide your full name</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                <div class="invalid-feedback">Please provide a valid email</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required>
+                <div class="invalid-feedback">Please provide your phone number</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" class="form-control" id="location" placeholder="Enter your location">
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="resume" class="form-label">Upload Resume</label>
+            <input type="file" class="form-control" id="resume" accept=".pdf,.doc,.docx">
+            <div class="form-text">Upload your resume in PDF or DOCX format (max 5MB)</div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="skills" class="form-label">Skills</label>
+            <input type="text" class="form-control typeahead" id="skills" placeholder="Add your skills" aria-describedby="skillsHelp">
+            <div id="skillsHelp" class="form-text">Type a skill and press Enter to add it</div>
+            <div class="mt-2" id="skills-container">
+              <span class="skill-tag">JavaScript <span class="remove-skill" aria-label="Remove JavaScript skill">&times;</span></span>
+              <span class="skill-tag">React <span class="remove-skill" aria-label="Remove React skill">&times;</span></span>
+              <span class="skill-tag">Node.js <span class="remove-skill" aria-label="Remove Node.js skill">&times;</span></span>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="experience" class="form-label">Experience</label>
+            <textarea class="form-control" id="experience" rows="5" placeholder="Describe your work experience"></textarea>
+          </div>
+          
+          <div class="mb-3">
+            <label for="education" class="form-label">Education</label>
+            <textarea class="form-control" id="education" rows="3" placeholder="List your educational background"></textarea>
+          </div>
+          
+          <div class="text-center">
+            <button type="submit" class="btn-save-profile">
+              Save Profile
+              <div class="spinner-border spinner-border-sm text-light spinner-container d-none" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Employers Section -->
+    <section id="employers" class="container mb-5">
+      <div class="employers-section">
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-4 mb-lg-0">
+            <img src="https://th.bing.com/th/id/OIP.DDkVnpDj1xYIzXqWHexMxwHaDt?w=304&h=175&c=7&r=0&o=5&dpr=1.5&pid=1.7" alt="Employers" class="img-fluid" loading="lazy">
+          </div>
+          <div class="col-lg-6">
+            <h2 class="section-title">For Employers</h2>
+            <p>Are you an employer looking to hire top talent? Our platform makes it easy to post job listings, manage applications, and find the perfect candidates for your organization.</p>
+            <p>With our advanced tools, you can:</p>
+            <ul>
+              <li>Post job listings and reach thousands of qualified candidates</li>
+              <li>Manage applications and shortlist candidates efficiently</li>
+              <li>View detailed profiles of job seekers to make informed hiring decisions</li>
+              <li>Access analytics to track your hiring performance</li>
+            </ul>
+            <div class="mt-4">
+              <button class="btn-post-job" data-bs-toggle="modal" data-bs-target="#post-job-modal" aria-label="Post a new job">
+                Post a Job
+              </button>
+              <button class="btn-contact-sales" data-bs-toggle="modal" data-bs-target="#contact-modal" aria-label="Contact sales team">
+                Contact Sales
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <h5>JobPortal</h5>
+          <p>Helping job seekers find the right opportunities and employers find the best talent since 2023.</p>
+          <div class="social-icons">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div class="col-md-2 mb-4">
+          <h5>Job Seekers</h5>
+          <ul class="list-unstyled">
+            <li><a href="#">Browse Jobs</a></li>
+            <li><a href="#">Create Profile</a></li>
+            <li><a href="#">Job Alerts</a></li>
+            <li><a href="#">Career Resources</a></li>
+          </ul>
+        </div>
+        <div class="col-md-2 mb-4">
+          <h5>Employers</h5>
+          <ul class="list-unstyled">
+            <li><a href="#">Post Jobs</a></li>
+            <li><a href="#">Browse Candidates</a></li>
+            <li><a href="#">Pricing Plans</a></li>
+            <li><a href="#">Hiring Resources</a></li>
+          </ul>
+        </div>
+        <div class="col-md-2 mb-4">
+          <h5>Company</h5>
+          <ul class="list-unstyled">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Blog</a></li>
+          </ul>
+        </div>
+        <div class="col-md-2 mb-4">
+          <h5>Support</h5>
+          <ul class="list-unstyled">
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="copyright">
+        <p class="mb-0">&copy; 202 JobPortal. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Login Modal -->
+  <div class="modal fade" id="login-modal" tabindex="-1" aria-hidden="true" aria-labelledby="loginModalLabel">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel">Login to Your Account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="login-form">
+            <div class="mb-3">
+              <label for="login-email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="login-email" placeholder="Enter your email" required>
+              <div class="invalid-feedback">Please provide a valid email</div>
+            </div>
+            <div class="mb-3">
+              <label for="login-password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="login-password" placeholder="Enter your password" required>
+              <div class="invalid-feedback">Please provide your password</div>
+            </div>
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="remember-me">
+              <label class="form-check-label" for="remember-me">Remember me</label>
+            </div>
+            <button type="submit" class="btn-modal btn-modal-primary mb-3">
+              Login
+              <div class="spinner-border spinner-border-sm text-light spinner-container d-none" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </button>
+            <div class="text-center">
+              <a href="#" data-bs-toggle="modal" data-bs-target="#forgot-password-modal" data-bs-dismiss="modal">Forgot password?</a>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <p class="mb-0">Don't have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#register-modal" data-bs-dismiss="modal">Register</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div class="modal fade" id="register-modal" tabindex="-1" aria-hidden="true" aria-labelledby="registerModalLabel">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="registerModalLabel">Create an Account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="register-form">
+            <div class="mb-3">
+              <label for="register-name" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="register-name" placeholder="Enter your full name" required>
+              <div class="invalid-feedback">Please provide your full name</div>
+            </div>
+            <div class="mb-3">
+              <label for="register-email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="register-email" placeholder="Enter your email" required>
+              <div class="invalid-feedback">Please provide a valid email</div>
+            </div>
+            <div class="mb-3">
+              <label for="register-password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="register-password" placeholder="Create a password" required>
+              <div class="invalid-feedback">Please create a password</div>
+            </div>
+            <div class="mb-3">
+              <label for="register-confirm-password" class="form-label">Confirm Password</label>
+              <input type="password" class="form-control" id="register-confirm-password" placeholder="Confirm your password" required>
+              <div class="invalid-feedback">Passwords must match</div>
+            </div>
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="terms" required>
+              <label class="form-check-label" for="terms">I agree to the <a href="#">terms and conditions</a></label>
+            </div>
+            <button type="submit" class="btn-modal btn-modal-primary">
+              Register
+              <div class="spinner-border spinner-border-sm text-light spinner-container d-none" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </button>
+          </form>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <p class="mb-0">Already have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#login-modal" data-bs-dismiss="modal">Login</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Post Job Modal -->
+  <div class="modal fade" id="post-job-modal" tabindex="-1" aria-hidden="true" aria-labelledby="postJobModalLabel">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="postJobModalLabel">Post a New Job</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="post-job-form">
+            <div class="mb-3">
+              <label for="job-title" class="form-label">Job Title</label>
+              <input type="text" class="form-control" id="job-title" placeholder="Enter job title" required>
+              <div class="invalid-feedback">Please provide a job title</div>
+            </div>
+            <div class="mb-3">
+              <label for="job-description" class="form-label">Job Description</label>
+              <textarea class="form-control" id="job-description" rows="5" placeholder="Enter detailed job description" required></textarea>
+              <div class="invalid-feedback">Please provide a job description</div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="job-location" class="form-label">Location</label>
+                <input type="text" class="form-control" id="job-location" placeholder="Enter job location" required>
+                <div class="invalid-feedback">Please provide a location</div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="job-salary" class="form-label">Salary</label>
+                <input type="text" class="form-control" id="job-salary" placeholder="Enter salary range" required>
+                <div class="invalid-feedback">Please provide a salary range</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="job-type" class="form-label">Job Type</label>
+              <select class="form-select" id="job-type" required>
+                <option value="">Select job type</option>
+                <option value="full-time">Full-time</option>
+                <option value="part-time">Part-time</option>
+                <option value="contract">Contract</option>
+                <option value="internship">Internship</option>
+                <option value="remote">Remote</option>
+              </select>
+              <div class="invalid-feedback">Please select a job type</div>
+            </div>
+            <div class="mb-3">
+              <label for="job-category" class="form-label">Job Category</label>
+              <select class="form-select" id="job-category" required>
+                <option value="">Select category</option>
+                <option value="technology">Technology</option>
+                <option value="marketing">Marketing</option>
+                <option value="design">Design</option>
+                <option value="finance">Finance</option>
+                <option value="healthcare">Healthcare</option>
+                <option value="education">Education</option>
+              </select>
+              <div class="invalid-feedback">Please select a category</div>
+            </div>
+            <button type="submit" class="btn-modal btn-modal-primary">
+              Post Job
+              <div class="spinner-border spinner-border-sm text-light spinner-container d-none" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div class="modal fade" id="forgot-password-modal" tabindex="-1" aria-hidden="true" aria-labelledby="forgotPasswordModalLabel">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="forgotPasswordModalLabel">Reset Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="forgot-password-form">
+            <div class="mb-3">
+              <label for="reset-email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="reset-email" placeholder="Enter your email" required>
+              <div class="invalid-feedback">Please provide your email</div>
+            </div>
+            <button type="submit" class="btn-modal btn-modal-primary">
+              Send Reset Link
+              <div class="spinner-border spinner-border-sm text-light spinner-container d-none" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </button>
+          </form>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <p class="mb-0">Remember your password? <a href="#" data-bs-toggle="modal" data-bs-target="#login-modal" data-bs-dismiss="modal">Login</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Modal -->
+  <div class="modal fade" id="contact-modal" tabindex="-1" aria-hidden="true" aria-labelledby="contactModalLabel">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="contactModalLabel">Contact Sales</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="contact-form">
+            <div class="mb-3">
+              <label for="contact-name" class="form-label">Name</label>
+              <input type="text" class="form-control" id="contact-name" placeholder="Your name" required>
+              <div class="invalid-feedback">Please provide your name</div>
+            </div>
+            <div class="mb-3">
+              <label for="contact-email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="contact-email" placeholder="Your email" required>
+              <div class="invalid-feedback">Please provide a valid email</div>
+            </div>
+            <div class="mb-3">
+              <label for="contact-company" class="form-label">Company</label>
+              <input type="text" class="form-control" id="contact-company" placeholder="Company name" required>
+              <div class="invalid-feedback">Please provide your company name</div>
+            </div>
+            <div class="mb-3">
+              <label for="contact-phone" class="form-label">Phone</label>
+              <input type="tel" class="form-control" id="contact-phone" placeholder="Your phone number">
+            </div>
+            <div class="mb-3">
+              <label for="contact-message" class="form-label">Message</label>
+              <textarea class="form-control" id="contact-message" rows="4" placeholder="How can we help you?" required></textarea>
+              <div class="invalid-feedback">Please provide your message</div>
+            </div>
+            <button type="submit" class="btn-modal btn-modal-primary">
+              Send Message
+              <div class="spinner-border spinner-border-sm text-light spinner-container d-none" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.3.1/typeahead.bundle.min.js"></script>
+  <script>
+   // Initialize Bootstrap components
+   document.addEventListener('DOMContentLoaded', function() {
+      // Initialize Scrollspy
+      const scrollSpy = new bootstrap.ScrollSpy(document.body, {
+        target: '#scrollspy-nav',
+        offset: 100
+      });
+
+      // Show/hide scrollspy nav
+      window.addEventListener('scroll', function() {
+        const scrollspyNav = document.getElementById('scrollspy-nav');
+        scrollspyNav.style.display = window.scrollY > 300 ? 'block' : 'none';
+      });
+
+      // Initialize all tooltips
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.forEach(tooltipTriggerEl => {
+        new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+
+      // Initialize all popovers
+      const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+      popoverTriggerList.forEach(popoverTriggerEl => {
+        new bootstrap.Popover(popoverTriggerEl);
+      });
+
+      // Focus management for modals
+      document.querySelectorAll('.modal').forEach(modalEl => {
+        modalEl.addEventListener('shown.bs.modal', () => {
+          const input = modalEl.querySelector('input[autofocus]');
+          input && input.focus();
+        });
+      });
+    });
+
+    // Alert system
+    function showAlert(message, type = 'success') {
+      const alert = document.getElementById('global-alert');
+      const alertMessage = document.getElementById('alert-message');
+      
+      alert.className = `alert alert-${type} alert-dismissible fade show alert-fixed`;
+      alertMessage.textContent = message;
+      
+      alert.style.display = 'block';
+      setTimeout(() => alert.classList.add('show'), 10);
+      
+      setTimeout(() => {
+        alert.classList.remove('show');
+        setTimeout(() => alert.style.display = 'none', 500);
+      }, 5000);
+    }
+
+    // Form validation
+    function validateForm(form) {
+      let isValid = true;
+      form.querySelectorAll('[required]').forEach(input => {
+        if (!input.value.trim()) {
+          input.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          input.classList.remove('is-invalid');
+          if (input.type === 'email' && !/^\S+@\S+\.\S+$/.test(input.value)) {
+            input.classList.add('is-invalid');
+            isValid = false;
+          }
+          if (input.id === 'register-confirm-password' && 
+              input.value !== document.getElementById('register-password').value) {
+            input.classList.add('is-invalid');
+            isValid = false;
+          }
+        }
+      });
+      return isValid;
+    }
+
+    // Form submission handlers
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        if (!validateForm(form)) return;
+
+        const button = form.querySelector('button[type="submit"]');
+        const spinner = button.querySelector('.spinner-border');
+        
+        spinner.classList.remove('d-none');
+        button.disabled = true;
+
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        spinner.classList.add('d-none');
+        button.disabled = false;
+        showAlert('Operation successful!');
+        
+        if (form.closest('.modal')) {
+          bootstrap.Modal.getInstance(form.closest('.modal')).hide();
+        }
+      });
+    });
+
+    // Job interactions
+    document.querySelectorAll('.btn-apply').forEach(button => {
+      button.addEventListener('click', function() {
+        const jobTitle = this.closest('.job-card').querySelector('h3').textContent;
+        const spinner = document.createElement('div');
+        spinner.className = 'spinner-border spinner-border-sm spinner-container';
+        this.innerHTML = 'Applying... ';
+        this.appendChild(spinner);
+        this.disabled = true;
+
+        setTimeout(() => {
+          this.innerHTML = 'Applied';
+          showAlert(`Applied for ${jobTitle}!`);
+        }, 1500);
+      });
+    });
+
+    document.querySelectorAll('.btn-save').forEach(button => {
+      button.addEventListener('click', function() {
+        const jobTitle = this.closest('.job-card').querySelector('h3').textContent;
+        this.innerHTML = this.innerHTML.includes('Save') ? 
+          '<i class="fas fa-check me-1"></i> Saved' : 'Save Job';
+        showAlert(this.innerHTML.includes('Saved') ? 
+          `${jobTitle} saved!` : `${jobTitle} removed!`);
+      });
+    });
+
+    // Job filtering and sorting
+    document.getElementById('job-filter').addEventListener('change', function() {
+      const filter = this.value;
+      document.querySelectorAll('.job-card').forEach(card => {
+        card.closest('.col-lg-6').style.display = filter === 'all' || 
+          card.querySelector(`.job-type.${filter}`) ? 'block' : 'none';
+      });
+    });
+
+    document.getElementById('job-sort').addEventListener('change', function() {
+      const jobs = Array.from(document.querySelectorAll('.col-lg-6'));
+      jobs.sort((a, b) => {
+        // Add sorting logic based on selected value
+        return 0;
+      });
+      jobs.forEach(job => document.getElementById('job-listings').appendChild(job));
+    });
+
+    // Typeahead implementations
+    $(document).ready(function() {
+      const jobs = ['Software Engineer', 'UX Designer', 'Product Manager'];
+      const locations = ['New Delhi', 'Mumbai', 'Remote'];
+      const skills = ['JavaScript', 'React', 'Node.js'];
+
+      // Job search
+      $('#job-search').typeahead({ hint: true }, {
+        name: 'jobs',
+        source: new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.whitespace,
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          local: jobs
+        })
+      });
+
+      // Location search
+      $('#location-search').typeahead({ hint: true }, {
+        name: 'locations',
+        source: new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.whitespace,
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          local: locations
+        })
+      });
+
+      // Skills input
+      $('#skills').typeahead({ hint: true }, {
+        name: 'skills',
+        source: new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.whitespace,
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          local: skills
+        })
+      }).on('typeahead:select', function(e, skill) {
+        $('#skills-container').append(
+          `<span class="skill-tag">${skill} <span class="remove-skill">&times;</span></span>`
+        );
+        $(this).typeahead('val', '');
+      });
+
+      // Skill removal
+      $(document).on('click', '.remove-skill', function() {
+        $(this).parent().remove();
+      });
+    });
+
+    // Load more jobs
+    document.getElementById('load-more-jobs').addEventListener('click', function() {
+      const spinner = this.querySelector('.spinner-border');
+      spinner.classList.remove('d-none');
+      this.disabled = true;
+
+      setTimeout(() => {
+        spinner.classList.add('d-none');
+        this.disabled = false;
+        // Add new job cards
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
